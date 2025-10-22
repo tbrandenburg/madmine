@@ -59,6 +59,11 @@ class MadMineGame:
         # Set up the environment first
         self.setup_environment()
 
+        # Initialize UI first so reload_world can use it
+        self.game_ui = GameUI()
+        self.world_ui = WorldGeneratorUI()
+        self.camera_controller = CameraController()
+
         # Generate the world BEFORE creating the player (crucial for collision!)
         self.current_world = "flat"  # Start with flat world
         self.reload_world("flat")
@@ -67,10 +72,6 @@ class MadMineGame:
         from ursina.prefabs.first_person_controller import FirstPersonController
         self.player = FirstPersonController()
         self.player.position = Vec3(5, 2, 5)  # Middle of 10x10 world, 2 units high (same as debug_main)
-
-        self.camera_controller = CameraController()
-        self.game_ui = GameUI()
-        self.world_ui = WorldGeneratorUI()
 
         # Game state
         self.last_fps_update = 0
