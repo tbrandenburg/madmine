@@ -106,8 +106,8 @@ class MadMineGame:
             generator_function = checkerboard_world
             world_name = "Checkerboard World"
         else:
-            generator_function = None  # Use default random world
-            world_name = "Random World"
+            generator_function = flat_world  # Use flat world as default (simpler)
+            world_name = "Flat World (Default)"
 
         # Generate the new world
         self.world_generator.generate_world(generator_function)
