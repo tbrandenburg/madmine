@@ -88,6 +88,10 @@ class MadMineGame:
         self.frame_count = 0
         self.current_fps = 0
 
+        # Welcome message timer
+        self.welcome_start_time = python_time.time()
+        self.welcome_hidden = False
+
         print("🚀 MadMine ready! Press H for help.")
 
     def setup_environment(self):
@@ -146,6 +150,12 @@ class MadMineGame:
         """
 
         try:
+            # Auto-hide welcome message after 3 seconds
+            if not self.welcome_hidden and python_time.time() - self.welcome_start_time >= 3.0:
+                self.game_ui.hide_welcome_message()
+                self.welcome_hidden = True
+                print("🙈 Welcome message auto-hidden after 3 seconds")
+
             # Player movement is handled automatically by FirstPersonController
             # No need for explicit update call
 
@@ -161,10 +171,12 @@ class MadMineGame:
                 # If held_keys isn't available, just use position
                 self.game_ui.update_player_info(self.player.position, False, False)
 
-            # Update world info
-            world_info = self.world_generator.get_world_info()
-            if world_info:
-                self.game_ui.update_world_info(world_info)
+            # Update world info (create dummy world info since we're not using WorldGenerator)
+            self.game_ui.update_world_info({
+                "total_blocks": 100,
+                "world_size": 10,
+                "block_types": ["grass"]
+            })
         except Exception as e:
             # Don't crash the game loop on UI errors
             print(f"⚠️ Update error (non-critical): {e}")
