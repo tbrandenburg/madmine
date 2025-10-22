@@ -33,12 +33,15 @@ print(f"Player has collider: {hasattr(player, 'collider')}")
 print(f"Example block position: {blocks[0].position}")
 print(f"Example block has collider: {blocks[0].collider is not None}")
 
+# Track start time for debug output
+start_time = python_time.time()
+
 # Debug update function
 def update():
     # Print player position every frame for first few seconds
-    if app.time < 5:  # First 5 seconds
-        if int(app.time * 2) % 2 == 0:  # Twice per second
-            print(f"Time: {app.time:.1f}s - Player pos: {player.position}")
+    if python_time.time() - start_time < 5:  # First 5 seconds
+        if int((python_time.time() - start_time) * 2) % 2 == 0:  # Twice per second
+            print(f"Time: {python_time.time() - start_time:.1f}s - Player pos: {player.position}")
 
 print("🔍 Debug mode - watch player position for first 5 seconds")
 print("Player should fall from y=2 to y=1 and stay there")
