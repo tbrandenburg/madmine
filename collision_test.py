@@ -3,6 +3,7 @@ Collision Test - Simple test to verify collision detection works
 """
 
 from ursina import *
+from ursina.prefabs.first_person_controller import FirstPersonController
 
 # Create the app
 app = Ursina()
