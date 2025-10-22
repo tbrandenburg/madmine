@@ -33,14 +33,15 @@ class Player:
         self.start_position = start_position
 
         # Create the first-person controller
-        # This gives us WASD movement and mouse look automatically!
-        self.controller = FirstPersonController(
-            model='cube',                    # What the player looks like (cube for now)
-            position=start_position,         # Where to start
-            scale=(1, 2, 1),                # Make it person-sized (1 wide, 2 tall, 1 deep)
-            speed=5,                         # How fast the player moves
-            mouse_sensitivity=Vec3(50, 50)   # How fast the camera turns
-        )
+        # Use same simple approach as working collision test!
+        self.controller = FirstPersonController()
+
+        # Set position after creation
+        self.controller.position = start_position
+
+        # Customize settings after creation (safer approach)
+        self.controller.speed = 5
+        self.controller.mouse_sensitivity = Vec3(50, 50)
 
         # Explicitly set collision and gravity properties
         self.controller.gravity = 1
