@@ -55,7 +55,12 @@ class MadMineGame:
 
         # Initialize game systems
         self.world_generator = WorldGenerator()
-        self.player = Player(start_position=Vec3(8, 2, 8))  # Start in middle of world, just above ground
+
+        # Use simple FirstPersonController like in working debug_main.py
+        from ursina.prefabs.first_person_controller import FirstPersonController
+        self.player = FirstPersonController()
+        self.player.position = Vec3(5, 2, 5)  # Middle of 10x10 world, 2 units high (same as debug_main)
+
         self.camera_controller = CameraController()
         self.game_ui = GameUI()
         self.world_ui = WorldGeneratorUI()
@@ -130,17 +135,20 @@ class MadMineGame:
         """
 
         try:
-            # Update player movement
-            self.player.update()
+            # Player movement is handled automatically by FirstPersonController
+            # No need for explicit update call
 
             # Update UI with current player info
-            player_info = self.player.get_movement_info()
-            if player_info and "position" in player_info:
+            # Use simple direct access since we're using FirstPersonController directly
+            try:
                 self.game_ui.update_player_info(
-                    player_info["position"],
-                    player_info["is_moving"],
-                    player_info["is_running"]
+                    self.player.position,
+                    bool(held_keys and any(held_keys.get(k, False) for k in ['w', 'a', 's', 'd'])),
+                    bool(held_keys and (held_keys.get('left shift', False) or held_keys.get('right shift', False)))
                 )
+            except (AttributeError, KeyError):
+                # If held_keys isn't available, just use position
+                self.game_ui.update_player_info(self.player.position, False, False)
 
             # Update world info
             world_info = self.world_generator.get_world_info()
