@@ -43,7 +43,8 @@ class Block:
             model='cube',           # Make it look like a cube
             position=position,      # Put it at the right spot
             color=block_color,      # Give it the right color
-            scale=(1, 1, 1)        # Make it normal size (1x1x1)
+            scale=(1, 1, 1),       # Make it normal size (1x1x1)
+            collider='box'         # Add collision so player can stand on blocks!
         )
 
 

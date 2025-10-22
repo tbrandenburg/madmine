@@ -39,7 +39,9 @@ class Player:
             position=start_position,         # Where to start
             scale=(1, 2, 1),                # Make it person-sized (1 wide, 2 tall, 1 deep)
             speed=5,                         # How fast the player moves
-            mouse_sensitivity=Vec3(50, 50)   # How fast the camera turns
+            mouse_sensitivity=Vec3(50, 50),  # How fast the camera turns
+            gravity=1,                       # Enable gravity so player falls onto blocks
+            jump_height=2                    # How high the player can jump
         )
 
         # Make the player model invisible since we're in first-person
