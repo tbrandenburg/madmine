@@ -56,7 +56,14 @@ class MadMineGame:
         # Initialize game systems
         self.world_generator = WorldGenerator()
 
-        # Use simple FirstPersonController like in working debug_main.py
+        # Set up the environment first
+        self.setup_environment()
+
+        # Generate the world BEFORE creating the player (crucial for collision!)
+        self.current_world = "flat"  # Start with flat world
+        self.reload_world("flat")
+
+        # Now create player after blocks exist
         from ursina.prefabs.first_person_controller import FirstPersonController
         self.player = FirstPersonController()
         self.player.position = Vec3(5, 2, 5)  # Middle of 10x10 world, 2 units high (same as debug_main)
@@ -66,16 +73,9 @@ class MadMineGame:
         self.world_ui = WorldGeneratorUI()
 
         # Game state
-        self.current_world = "random"
         self.last_fps_update = 0
         self.frame_count = 0
         self.current_fps = 0
-
-        # Set up the environment
-        self.setup_environment()
-
-        # Generate the initial world
-        self.reload_world()
 
         print("🚀 MadMine ready! Press H for help.")
 
