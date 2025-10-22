@@ -36,7 +36,6 @@ class Player:
         # This gives us WASD movement and mouse look automatically!
         self.controller = FirstPersonController(
             model='cube',                    # What the player looks like (cube for now)
-            color=None,                      # Make it invisible (we see through the player's eyes)
             position=start_position,         # Where to start
             scale=(1, 2, 1),                # Make it person-sized (1 wide, 2 tall, 1 deep)
             speed=5,                         # How fast the player moves

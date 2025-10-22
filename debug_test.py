@@ -63,7 +63,8 @@ try:
     print("💡 Try running the game again - it might work now with the fixes!")
 
     # Don't start the actual game loop in debug mode
-    app.quit()
+    # Just let the script finish naturally
+    print("🎮 Debug test complete - ready to run the real game!")
 
 except Exception as e:
     print(f"\n❌ Error found at step: {e}")
