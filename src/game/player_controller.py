@@ -60,9 +60,14 @@ class Player:
         This gets called many times per second to handle movement.
         """
         # Handle running (hold Shift to run faster)
-        if held_keys['left shift'] or held_keys['right shift']:
-            self.controller.speed = self.run_speed
-        else:
+        # Check if held_keys exists to avoid NoneType errors
+        try:
+            if held_keys and (held_keys.get('left shift') or held_keys.get('right shift')):
+                self.controller.speed = self.run_speed
+            else:
+                self.controller.speed = self.normal_speed
+        except (AttributeError, KeyError):
+            # If held_keys isn't available yet, use normal speed
             self.controller.speed = self.normal_speed
 
         # The FirstPersonController handles most movement automatically,
@@ -87,24 +92,45 @@ class Player:
 
     def is_moving(self) -> bool:
         """Check if the player is currently moving."""
-        return any([
-            held_keys['w'], held_keys['s'],     # Forward/backward
-            held_keys['a'], held_keys['d'],     # Left/right
-        ])
+        try:
+            if not held_keys:
+                return False
+            return any([
+                held_keys.get('w', False), held_keys.get('s', False),     # Forward/backward
+                held_keys.get('a', False), held_keys.get('d', False),     # Left/right
+            ])
+        except (AttributeError, KeyError):
+            return False
 
     def is_running(self) -> bool:
         """Check if the player is running (holding Shift)."""
-        return held_keys['left shift'] or held_keys['right shift']
+        try:
+            if not held_keys:
+                return False
+            return held_keys.get('left shift', False) or held_keys.get('right shift', False)
+        except (AttributeError, KeyError):
+            return False
 
     def get_movement_info(self) -> dict:
         """Get information about the player's current movement state."""
-        return {
-            "position": self.get_position(),
-            "is_moving": self.is_moving(),
-            "is_running": self.is_running(),
-            "speed": self.controller.speed,
-            "looking_direction": self.get_looking_direction()
-        }
+        try:
+            return {
+                "position": self.get_position(),
+                "is_moving": self.is_moving(),
+                "is_running": self.is_running(),
+                "speed": getattr(self.controller, 'speed', self.normal_speed),
+                "looking_direction": self.get_looking_direction()
+            }
+        except Exception as e:
+            # Return safe defaults if something goes wrong
+            print(f"⚠️ Player info error: {e}")
+            return {
+                "position": Vec3(0, 0, 0),
+                "is_moving": False,
+                "is_running": False,
+                "speed": self.normal_speed,
+                "looking_direction": Vec3(0, 0, 1)
+            }
 
 
 class CameraController:

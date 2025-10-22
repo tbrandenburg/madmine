@@ -129,20 +129,27 @@ class MadMineGame:
         It updates all the game systems and keeps everything running smoothly.
         """
 
-        # Update player movement
-        self.player.update()
+        try:
+            # Update player movement
+            self.player.update()
 
-        # Update UI with current player info
-        player_info = self.player.get_movement_info()
-        self.game_ui.update_player_info(
-            player_info["position"],
-            player_info["is_moving"],
-            player_info["is_running"]
-        )
+            # Update UI with current player info
+            player_info = self.player.get_movement_info()
+            if player_info and "position" in player_info:
+                self.game_ui.update_player_info(
+                    player_info["position"],
+                    player_info["is_moving"],
+                    player_info["is_running"]
+                )
 
-        # Update world info
-        world_info = self.world_generator.get_world_info()
-        self.game_ui.update_world_info(world_info)
+            # Update world info
+            world_info = self.world_generator.get_world_info()
+            if world_info:
+                self.game_ui.update_world_info(world_info)
+        except Exception as e:
+            # Don't crash the game loop on UI errors
+            print(f"⚠️ Update error (non-critical): {e}")
+            pass
 
         # Update FPS counter (every second)
         current_time = python_time.time()
