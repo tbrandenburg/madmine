@@ -64,14 +64,24 @@ class MadMineGame:
         self.world_ui = WorldGeneratorUI()
         self.camera_controller = CameraController()
 
-        # Generate the world BEFORE creating the player (crucial for collision!)
-        self.current_world = "flat"  # Start with flat world
-        self.reload_world("flat")
+        # Create blocks EXACTLY like collision_test.py (bypass WorldGenerator for now)
+        print("Creating blocks exactly like collision_test.py...")
+        for x in range(10):  # Make it 10x10 to cover more area
+            for z in range(10):
+                Entity(
+                    model='cube',
+                    position=(x, 0, z),
+                    color=color.green,
+                    collider='box'  # Important: collision detection
+                )
+        print(f"Created 100 blocks directly (bypassing WorldGenerator)")
 
-        # Now create player after blocks exist
+        # Now create player after blocks exist - use EXACT same approach as collision_test.py
         from ursina.prefabs.first_person_controller import FirstPersonController
-        self.player = FirstPersonController()
-        self.player.position = Vec3(5, 2, 5)  # Middle of 10x10 world, 2 units high (same as debug_main)
+        self.player = FirstPersonController()  # Use default position like collision_test
+        # Don't set position immediately - let it use default Vec3(0, 0.5, 0)
+        print(f"Player created at: {self.player.position}")
+        print(f"Player has gravity: {hasattr(self.player, 'gravity')}")
 
         # Game state
         self.last_fps_update = 0
