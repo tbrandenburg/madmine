@@ -55,7 +55,7 @@ class MadMineGame:
 
         # Initialize game systems
         self.world_generator = WorldGenerator()
-        self.player = Player(start_position=Vec3(8, 5, 8))  # Start in middle of world, up high
+        self.player = Player(start_position=Vec3(8, 2, 8))  # Start in middle of world, just above ground
         self.camera_controller = CameraController()
         self.game_ui = GameUI()
         self.world_ui = WorldGeneratorUI()
